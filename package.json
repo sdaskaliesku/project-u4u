@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:prod": "ng build --configuration production --base-href=/",
+    "deploy:firebase": "npm run build:prod && firebase deploy --only hosting --project project-uhp"
   },
   "private": true,
   "dependencies": {

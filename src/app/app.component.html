@@ -1,5 +1,20 @@
 <nav style="padding:8px">
-  <a routerLink="/">Snapshot</a> |
-  <a routerLink="/trends">Trends</a>
+  <a routerLink="/" routerLinkActive="active">Snapshot</a> |
+  <a routerLink="/trends" routerLinkActive="active">Trends</a>
 </nav>
 <router-outlet></router-outlet>
+
+<footer style="margin-top: 20px; font-size: 0.9em; text-align: center; color: #555;">
+  Disclaimer: All data is sourced from
+  <a href="docs/Parolee%20benefit%20tracking%20DHS.pdf" target="_blank" style="color: #007bff; text-decoration: none;">
+    Parolee Benefit Tracking DHS.pdf
+  </a>.
+  <br />
+  See also:
+  <a href="docs/OIG-25-30-Jul25.pdf" target="_blank" style="color: #007bff; text-decoration: none;">
+    OIG-25-30-Jul25.pdf
+  </a>,
+  <a href="docs/AdministrativeHoldonAllUSCISBenefitRequestsFiledbyParoleesUnderU4U.pdf" target="_blank" style="color: #007bff; text-decoration: none;">
+    Administrative Hold on All USCIS Benefit Requests Filed by Parolees Under U4U.pdf
+  </a>.
+</footer>
