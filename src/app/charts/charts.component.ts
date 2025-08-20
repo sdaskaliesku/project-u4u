@@ -50,7 +50,7 @@ export class ChartsComponent implements AfterViewInit {
     new Chart(this.barCanvas.nativeElement, {
       type: 'bar',
       data: {
-        labels: ['I-130', 'I-131', 'I-485', 'I-765', 'I-821'],
+        labels: ['I-130 (Alien relative)', 'I-131 (Re-parole/Travel doc, etc)', 'I-485 (AOS)', 'I-765 (EAD)', 'I-821 (TPS)'],
         datasets: [
           { label: 'Receipts', data: [8391, 127833, 7963, 389595, 178292] },
           { label: 'Approvals', data: [4948, 8886, 4043, 326002, 85100] },

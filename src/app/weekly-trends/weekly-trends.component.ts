@@ -164,7 +164,7 @@ export class WeeklyTrendsComponent implements AfterViewInit, OnInit {
           {label: 'Completions', data: this.data.weekly.i485.completions}
         ]
       },
-      options: this.baseLineOpts('I-485 — Weekly', wCut)
+      options: this.baseLineOpts('I-485 (AOS) — Weekly', wCut)
     });
 
     // 4) I-765
@@ -177,7 +177,7 @@ export class WeeklyTrendsComponent implements AfterViewInit, OnInit {
           {label: 'Completions', data: this.data.weekly.i765.completions}
         ]
       },
-      options: this.baseLineOpts('I-765 — Weekly', wCut)
+      options: this.baseLineOpts('I-765 (EAD) — Weekly', wCut)
     });
   }
 }
