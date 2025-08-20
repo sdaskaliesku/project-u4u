@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import {CommonModule} from '@angular/common';
+import {WeeklyTrendsComponent} from '../weekly-trends/weekly-trends.component';
 
 type WeeklyJson = {
   as_of: string;
@@ -11,7 +12,7 @@ type WeeklyJson = {
 @Component({
   selector: 'app-charts',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, WeeklyTrendsComponent],
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.scss']
 })
@@ -66,51 +67,55 @@ export class ChartsComponent implements AfterViewInit {
   }
 
   private computeU4UStats(json: WeeklyJson) {
-    // Parse dates. If label is YYYY-MM, use END of month; if YYYY-MM-DD, use exact.
+    // Parse YYYY-MM or YYYY-MM-DD to Date
     const toDate = (s: string) => {
       if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return new Date(s);
       if (/^\d{4}-\d{2}$/.test(s)) {
         const [y, m] = s.split('-').map(Number);
-        return new Date(y, m, 0); // last day of that month (m is 1-based here)
+        return new Date(y, m, 0); // last day of month
       }
       return new Date(s);
     };
 
-    const cutoff = new Date(this.cutoffStr);
-    const outStart = new Date(this.outStartStr);
+    const cutoff   = new Date('2023-08-16');  // exact date
+    const outStart = new Date('2025-08-16');
+
     const labels = json.cum_arrivals.labels;
     const series = json.cum_arrivals.series;
-
-    // Find U4U/Ukraine key
     const key = Object.keys(series).find(k => /ukrain|u4u/i.test(k));
-    if (!key) {
-      return { before: 0, total: 0, avgPerDay: 0, totalOutSince: 0 };
-    }
+    if (!key) return { before: 0, total: 0, avgPerDay: 0, totalOutSince: 0 };
+
     const arr = series[key];
+    const dates = labels.map(toDate);
 
-    // Index at or before cutoff
-    let cutoffIdx = -1;
-    for (let i = 0; i < labels.length; i++) {
-      if (toDate(labels[i]) <= cutoff) cutoffIdx = i; else break;
-    }
-    if (cutoffIdx < 0) cutoffIdx = 0;
+    // --- linear interpolation y(cutoff) between [i, i+1] such that date[i] <= cutoff < date[i+1]
+    let i = 0;
+    while (i + 1 < dates.length && !(dates[i] <= cutoff && cutoff < dates[i + 1])) i++;
+    if (i + 1 >= dates.length) i = Math.max(0, dates.length - 2); // clamp if cutoff is after last point
 
+    const d0 = +dates[i],     d1 = +dates[i + 1];
+    const y0 = arr[i] ?? 0,   y1 = arr[i + 1] ?? y0;
+    const t  = d1 === d0 ? 0 : (+cutoff - d0) / (d1 - d0);   // 0..1
+    const beforeExact = y0 + t * (y1 - y0);                  // <- ~160,447 for your data
+
+    // latest total (last point)
     const lastIdx = Math.min(arr.length - 1, labels.length - 1);
-    const lastDate = toDate(labels[lastIdx]);
+    const total   = arr[lastIdx] ?? 0;
+    const lastDate = dates[lastIdx];
 
-    const before = arr[cutoffIdx] ?? 0;
-    const total  = arr[lastIdx] ?? 0;
-    const after  = Math.max(0, total - before);
+    const before = Math.round(beforeExact);
+    const after  = Math.max(0, Math.round(total - before));
 
-    // #1 Average out-of-parole per day (average arrivals after cutoff per day)
+    // average per day (simple average over period cutoff..latest)
     const daysFromCutoff = Math.max(1, Math.floor((+lastDate - +cutoff) / 86400000));
     const avgPerDay = after / daysFromCutoff;
 
-    // #2 Total out-of-parole since Aug 16, 2025: avgPerDay * days since 2025-08-16 to today
+    // total since 2025-08-16
     const now = new Date();
     const daysSinceOutStart = Math.max(0, Math.floor((+now - +outStart) / 86400000));
     const totalOutSince = avgPerDay * daysSinceOutStart;
 
     return { before, total, avgPerDay, totalOutSince };
   }
+
 }

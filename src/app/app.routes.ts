@@ -4,8 +4,7 @@ import { ChartsComponent } from './charts/charts.component';
 import { WeeklyTrendsComponent } from './weekly-trends/weekly-trends.component';
 
 export const routes: Routes = [
-  { path: '', component: ChartsComponent },          // existing bar chart
-  { path: 'trends', component: WeeklyTrendsComponent } // new trends page
+  { path: '', component: ChartsComponent }
 ];
 
 @NgModule({

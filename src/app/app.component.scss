@@ -17,3 +17,32 @@ nav a {
     color: #fff; /* White text for active link */
   }
 }
+
+header.disclaimer {
+  background: #fff3cd;       /* soft yellow */
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+header.disclaimer strong {
+  color: #856404;
+}
+
+header.disclaimer .highlight {
+  font-weight: bold;
+  color: #b71c1c;  /* deep red for emphasis */
+}
+
+header.disclaimer a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+header.disclaimer a:hover {
+  text-decoration: none;
+}
+
