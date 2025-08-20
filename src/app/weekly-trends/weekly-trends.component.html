@@ -1,0 +1,18 @@
+<!-- loading overlay so canvases stay in DOM -->
+<div class="loading-overlay" *ngIf="loading">Loading…</div>
+<div class="error" *ngIf="err">Error: {{ err }}</div>
+
+<div class="wrap">
+  <section>
+    <div class="chart"><canvas #cumCanvas></canvas></div>
+  </section>
+
+  <section>
+    <div class="chart"><canvas #allCanvas></canvas></div>
+  </section>
+
+  <section class="grid2">
+    <div class="chart"><canvas #i485Canvas></canvas></div>
+    <div class="chart"><canvas #i765Canvas></canvas></div>
+  </section>
+</div>

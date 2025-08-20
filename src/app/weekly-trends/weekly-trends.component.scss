@@ -1,0 +1,6 @@
+.wrap { display: grid; gap: 20px; }
+.chart { height: 320px; position: relative; }
+.grid2 { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.loading-overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(255,255,255,0.8); z-index: 10; font-weight: 600; }
+.error { color: #b00020; margin: 8px 0; }
