@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import {CommonModule} from '@angular/common';
@@ -16,8 +16,9 @@ type WeeklyJson = {
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.scss']
 })
-export class ChartsComponent implements AfterViewInit {
+export class ChartsComponent implements AfterViewInit, OnInit {
   @ViewChild('barCanvas') barCanvas!: ElementRef<HTMLCanvasElement>;
+  isTooltipOpen = false;
 
   // U4U counters
   readonly cutoffStr = '2023-08-16';
@@ -116,6 +117,29 @@ export class ChartsComponent implements AfterViewInit {
     const totalOutSince = avgPerDay * daysSinceOutStart;
 
     return { before, total, avgPerDay, totalOutSince };
+  }
+
+  onInfoIconClick(event: MouseEvent) {
+    event.stopPropagation();
+    this.isTooltipOpen = !this.isTooltipOpen;
+  }
+
+  closeTooltip() {
+    this.isTooltipOpen = false;
+  }
+
+  ngOnInit() {
+    document.addEventListener('click', this.handleDocumentClick);
+  }
+
+  ngOnDestroy() {
+    document.removeEventListener('click', this.handleDocumentClick);
+  }
+
+  handleDocumentClick = (event: MouseEvent) => {
+    if (this.isTooltipOpen) {
+      this.isTooltipOpen = false;
+    }
   }
 
 }

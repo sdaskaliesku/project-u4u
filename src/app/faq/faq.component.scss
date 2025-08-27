@@ -1,0 +1,18 @@
+h2[i18n] {
+  margin-top: 0;
+  font-size: 1.7rem;
+}
+ul {
+  padding-left: 1.2em;
+  margin: 1em 0;
+}
+li[i18n] {
+  margin-bottom: 0.5em;
+  font-weight: 500;
+}
+li[i18n]:nth-child(even) {
+  font-weight: 400;
+  color: #444;
+  margin-bottom: 1.2em;
+}
+

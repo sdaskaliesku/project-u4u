@@ -1,4 +1,3 @@
-<!-- Existing 3 tiles -->
 <div class="stats">
   <div class="stat">
     <div class="label">U4U arrivals before Aug 16, 2023</div>
@@ -9,21 +8,26 @@
     <div class="value">{{ afterCount === null ? '—' : (afterCount | number) }}</div>
   </div>
   <div class="stat">
-    <div class="label">Total arrivals (latest)</div>
+    <div class="label">Total arrivals (based on available data between	2/24/2022	-	3/9/2025)</div>
     <div class="value">{{ totalCount === null ? '—' : (totalCount | number) }}</div>
+  </div>
+  <div class="stat">
+    <div class="label">Average out of parole per day (U4U)</div>
+    <div class="value">{{ avgOutPerDay === null ? '—' : (avgOutPerDay | number:'1.0-0') }}</div>
   </div>
 </div>
 
-<!-- NEW 2 tiles -->
-<div class="stats">
-  <div class="stat">
-    <div class="label">Average out of parole per day (U4U)</div>
-    <div class="value">
-      {{ avgOutPerDay === null ? '—' : (avgOutPerDay | number:'1.0-0') }}
+<div class="stats centered">
+  <div class="stat highlight">
+    <div class="label">
+      Total out of parole since Aug 16, 2025 (est.)
+      <span class="info-icon" (click)="onInfoIconClick($event)">
+        i
+        <span class="tooltip" *ngIf="isTooltipOpen">
+          This value is estimated assuming parolees have no other statuses and haven't applied to any of them. It does not include parolees who left the US, as this information is unavailable.
+        </span>
+      </span>
     </div>
-  </div>
-  <div class="stat">
-    <div class="label">Total out of parole since Aug 16, 2025 (est.)</div>
     <div class="value">
       {{ totalOutSinceAug162025 === null ? '—' : (totalOutSinceAug162025 | number:'1.0-0') }}
     </div>

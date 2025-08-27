@@ -1,0 +1,16 @@
+<div *ngIf="pdfList.length > 0">
+  <ul class="docs-list">
+    <li *ngFor="let pdf of pdfList" (click)="selectPdf(pdf)" [class.selected]="pdf === selectedPdf">
+      <span class="doc-title">{{ pdf.title }}</span>
+      <span class="doc-actions">
+        <button (click)="downloadPdf(pdf); $event.stopPropagation();" title="Download">Download</button>
+        <button *ngIf="selectedPdf !== pdf" (click)="selectPdf(pdf); $event.stopPropagation();" title="Preview">Preview</button>
+      </span>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="selectedPdf" class="preview">
+  <h3>{{ selectedPdf.title }}</h3>
+  <iframe [src]="safePdfUrl"></iframe>
+</div>
