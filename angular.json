@@ -108,5 +108,9 @@
   },
   "cli": {
     "analytics": "da9e42ba-e93a-49dc-b1e1-7b4f52a9ab7e"
+  },
+  "i18n": {
+    "sourceLocale": "en",
+    "locales": {}
   }
 }

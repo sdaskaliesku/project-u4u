@@ -1,0 +1,21 @@
+{
+  "en": {
+    "expand": "Expand all",
+    "collapse": "Collapse all",
+    "faqTitle": "Frequently Asked Questions",
+    "faqQ1": "Q: What is this site for?",
+    "faqA1": "A: This site provides reference documents and data for U4U-related topics.",
+    "faqQ2": "Q: How do I preview or download documents?",
+    "faqA2": "A: Go to the Docs page, select a document, and use the preview or download options."
+  },
+  "uk": {
+    "expand": "Розгорнути все",
+    "collapse": "Згорнути все",
+    "faqTitle": "Часті питання",
+    "faqQ1": "П: Для чого цей сайт?",
+    "faqA1": "В: Сайт надає довідкові документи та дані щодо U4U.",
+    "faqQ2": "П: Як переглянути або завантажити документи?",
+    "faqA2": "В: Перейдіть на сторінку Документи, оберіть файл і скористайтеся опціями перегляду або завантаження."
+  }
+}
+
