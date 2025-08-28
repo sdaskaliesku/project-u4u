@@ -18,6 +18,7 @@ type WeeklyJson = {
 })
 export class ChartsComponent implements AfterViewInit, OnInit {
   @ViewChild('barCanvas') barCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('outStatusChart') outStatusChart!: ElementRef<HTMLCanvasElement>;
   isTooltipOpen = false;
 
   // U4U counters
@@ -43,6 +44,7 @@ export class ChartsComponent implements AfterViewInit, OnInit {
         this.afterCount  = total - before;
         this.avgOutPerDay = avgPerDay;
         this.totalOutSinceAug162025 = totalOutSince;
+        this.renderOutStatusChart();
       },
       error: () => { /* leave tiles as — */ }
     });
@@ -67,6 +69,60 @@ export class ChartsComponent implements AfterViewInit, OnInit {
     });
   }
 
+  renderOutStatusChart() {
+    if (!this.avgOutPerDay) return;
+    const start = new Date(this.outStartStr);
+    const today = new Date();
+    const days = Math.max(0, Math.floor((+today - +start) / 86400000));
+    const labels: string[] = [];
+    const data: number[] = [];
+    for (let i = 0; i <= days; i++) {
+      const d = new Date(start.getTime() + i * 86400000);
+      labels.push(d.toISOString().slice(0, 10));
+      data.push(Math.round(this.avgOutPerDay * i));
+    }
+    new Chart(this.outStatusChart.nativeElement, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Cumulative Out of Status',
+          data,
+          borderColor: '#d32f2f',
+          backgroundColor: 'rgba(211,47,47,0.08)',
+          fill: true,
+          pointRadius: 0,
+          tension: 0.15
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Cumulative Number of People Losing Legal Status (since Aug 16, 2025)'
+          },
+          tooltip: {
+            enabled: true,
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context: any) {
+                return ' ' + context.dataset.label + ': ' + context.parsed.y.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Date' }, ticks: { maxTicksLimit: 10 } },
+          y: { title: { display: true, text: 'Cumulative Count' }, beginAtZero: true }
+        }
+      }
+    });
+  }
+
   private computeU4UStats(json: WeeklyJson) {
     // Parse YYYY-MM or YYYY-MM-DD to Date
     const toDate = (s: string) => {
@@ -78,8 +134,8 @@ export class ChartsComponent implements AfterViewInit, OnInit {
       return new Date(s);
     };
 
-    const cutoff   = new Date('2023-08-16');  // exact date
-    const outStart = new Date('2025-08-16');
+    const cutoff   = new Date(this.cutoffStr);  // exact date
+    const outStart = new Date(this.outStartStr);
 
     const labels = json.cum_arrivals.labels;
     const series = json.cum_arrivals.series;

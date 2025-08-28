@@ -24,7 +24,9 @@
       <span class="info-icon" (click)="onInfoIconClick($event)">
         i
         <span class="tooltip" *ngIf="isTooltipOpen">
-          This value is estimated assuming parolees have no other statuses and haven't applied to any of them. It does not include parolees who left the US, as this information is unavailable.
+          This value is estimated assuming parolees have no other statuses and haven't applied to any of them, except re-parole application.
+          Since pending re-parole application doesn't protect a person from accrual of unlawful presence, a person with no status (or other protective status) is considered an illegal alien.
+          It does not include parolees who left the US, as this information is unavailable.
         </span>
       </span>
     </div>
@@ -32,6 +34,10 @@
       {{ totalOutSinceAug162025 === null ? '—' : (totalOutSinceAug162025 | number:'1.0-0') }}
     </div>
   </div>
+</div>
+
+<div class="out-status-chart-wrap">
+  <canvas #outStatusChart></canvas>
 </div>
 
 <app-weekly-trends></app-weekly-trends>
